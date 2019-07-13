@@ -22,7 +22,7 @@ public class EmployeeController {
         this.relationshipRepository = relationshipRepository;
     }
 
-    @GetMapping(path = "/{employee}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{employee}", produces = APPLICATION_JSON_VALUE)
     public Map<String, String> get(@PathVariable String employee) {
         return relationshipRepository.findEmployee(employee);
     }

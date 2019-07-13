@@ -23,5 +23,4 @@ public class HierarchyManagerApplication {
 		dataSource.setUrl("jdbc:sqlite:memory:myDb?cache=shared");
 		return dataSource;
 	}
-
 }
