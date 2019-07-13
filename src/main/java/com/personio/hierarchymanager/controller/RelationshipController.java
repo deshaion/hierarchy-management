@@ -23,9 +23,6 @@ public class RelationshipController {
     }
 
 
-    //return json - loops and multiply roots
-    //keep in database - and get the superviser and super-superviser's name
-
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public Map<String, Object> handleRawRelationsip(@RequestBody Map<String, String> rawHierarchy) {
         return relationshipService.saveAndGenerateEmployeeHierarchy(rawHierarchy);

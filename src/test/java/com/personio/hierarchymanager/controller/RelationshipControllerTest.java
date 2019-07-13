@@ -2,6 +2,7 @@ package com.personio.hierarchymanager.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.personio.hierarchymanager.dao.RelationshipRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,11 +36,15 @@ public class RelationshipControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private RelationshipRepository relationshipRepository;
+
     @Before
     public void initMockMvc() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .build();
+        relationshipRepository.clearRelationships();
     }
 
     @Test
