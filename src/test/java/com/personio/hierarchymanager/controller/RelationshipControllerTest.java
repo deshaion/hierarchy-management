@@ -55,7 +55,7 @@ public class RelationshipControllerTest {
         rawRelationships.put("Nick", "Sophie");
         rawRelationships.put("Sophie", "Jonas");
 
-        checkRelationships(rawRelationships, "{\"Jonas\": {\"Sophie\": {\"Nick\":{\"Pete\":{}, \"Barbara\":{}}}}}");
+        assertSuccessfulRequest(rawRelationships, "{\"Jonas\": {\"Sophie\": {\"Nick\":{\"Pete\":{}, \"Barbara\":{}}}}}");
     }
 
     @Test
@@ -63,7 +63,19 @@ public class RelationshipControllerTest {
         Map<String, String> rawRelationships = new HashMap<>();
         rawRelationships.put("Pete", "Nick");
 
-        checkRelationships(rawRelationships, "{\"Nick\": {\"Pete\": {}}}");
+        assertSuccessfulRequest(rawRelationships, "{\"Nick\": {\"Pete\": {}}}");
+    }
+
+    @Test
+    public void testEmptyBody() throws Exception {
+        String requestJson = objectMapper.writeValueAsString(new HashMap<>());
+
+        mockMvc.perform(post("/relationships")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.message", is("The empty list of relationships was recieved. It cannot be handled.")));
     }
 
     @Test
@@ -104,7 +116,7 @@ public class RelationshipControllerTest {
 
     @Test
     public void doubleKeys() throws Exception {
-        checkRelationships("{\"Pete\":\"Nick\", \"Pete\":\"Jonas\"}", "{\"Jonas\":{\"Pete\":{}}}");
+        assertSuccessfulRequest("{\"Pete\":\"Nick\", \"Pete\":\"Jonas\"}", "{\"Jonas\":{\"Pete\":{}}}");
     }
 
     @Test
@@ -124,11 +136,11 @@ public class RelationshipControllerTest {
                 .andExpect(jsonPath("$.message", is("There are more than 1 root in request. Roots are: [Victor, Steve]")));
     }
 
-    private void checkRelationships(Map<String, String> rawRelationships, String expectedJson) throws Exception {
-        checkRelationships(objectMapper.writeValueAsString(rawRelationships), expectedJson);
+    private void assertSuccessfulRequest(Map<String, String> rawRelationships, String expectedJson) throws Exception {
+        assertSuccessfulRequest(objectMapper.writeValueAsString(rawRelationships), expectedJson);
     }
 
-    private void checkRelationships(String requestJson, String expectedJson) throws Exception {
+    private void assertSuccessfulRequest(String requestJson, String expectedJson) throws Exception {
         ResultActions resultActions = mockMvc.perform(post("/relationships")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(requestJson))

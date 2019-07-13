@@ -22,9 +22,8 @@ public class RelationshipController {
         this.relationshipService = relationshipService;
     }
 
-
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public Map<String, Object> handleRawRelationsip(@RequestBody Map<String, String> rawHierarchy) {
-        return relationshipService.saveAndGenerateEmployeeHierarchy(rawHierarchy);
+        return relationshipService.saveAndBuildEmployeeHierarchy(rawHierarchy);
     }
 }

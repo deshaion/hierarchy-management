@@ -1,5 +1,6 @@
 package com.personio.hierarchymanager.util;
 
+import com.personio.hierarchymanager.exception.EmptyRequestException;
 import com.personio.hierarchymanager.exception.LoopInRequestException;
 import com.personio.hierarchymanager.exception.MultiplyRootException;
 
@@ -16,6 +17,10 @@ public class EmployeeHierarchyBuilder {
     }
 
     public Map<String, Object> build() {
+        if (rawHierarchy.isEmpty()) {
+            throw new EmptyRequestException("The empty list of relationships was recieved. It cannot be handled.");
+        }
+
         Map<String, Set<String>> employees = new HashMap<>();
         Set<String> rootList = new HashSet<>(rawHierarchy.values());
 
@@ -33,16 +38,16 @@ public class EmployeeHierarchyBuilder {
         }
         employees.put("ROOT", rootList);
 
-        return generateHierarchy("ROOT", employees);
+        return generateHierarchyBelow("ROOT", employees);
     }
 
-    private Map<String, Object> generateHierarchy(String superviser, Map<String, Set<String>> employees) {
-        Map<String, Object> answer = new HashMap<>();
-        Set<String> emp = employees.get(superviser);
-        if (emp != null) {
-            emp.forEach(employee -> answer.put(employee, generateHierarchy(employee, employees)));
+    private Map<String, Object> generateHierarchyBelow(String superviser, Map<String, Set<String>> employees) {
+        Map<String, Object> heirarchyBelowSuperviser = new HashMap<>();
+        Set<String> employeesSetOfSupervisor = employees.get(superviser);
+        if (employeesSetOfSupervisor != null) {
+            employeesSetOfSupervisor.forEach(employee -> heirarchyBelowSuperviser.put(employee, generateHierarchyBelow(employee, employees)));
         }
 
-        return answer;
+        return heirarchyBelowSuperviser;
     }
 }

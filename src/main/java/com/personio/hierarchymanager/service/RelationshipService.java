@@ -16,9 +16,7 @@ public class RelationshipService {
         this.relationshipRepository = relationshipRepository;
     }
 
-
-
-    public Map<String, Object> saveAndGenerateEmployeeHierarchy(Map<String, String> rawHierarchy) {
+    public Map<String, Object> saveAndBuildEmployeeHierarchy(Map<String, String> rawHierarchy) {
         Map<String, Object> employeeHierarchy = new EmployeeHierarchyBuilder(rawHierarchy).build();
 
         // if it was built successfully

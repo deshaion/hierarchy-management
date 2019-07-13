@@ -25,12 +25,10 @@ public class RelationshipRepository {
     }
 
     public int[] saveRelationships(Map<String, String> relationships) {
-
-        //TODO treat the case if this employee is already in database
         final Iterator<Map.Entry<String, String>> iter = relationships.entrySet().iterator();
-        int[] updateCounts = jdbcTemplate
+        return jdbcTemplate
                 .batchUpdate(
-                        "insert into employee_relationships (employee, supervisor) values(?, ?)",
+                        "REPLACE into employee_relationships (employee, supervisor) values(?, ?)",
                         new BatchPreparedStatementSetter() {
                             @Override
                             public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -44,7 +42,6 @@ public class RelationshipRepository {
                                 return relationships.size();
                             }
                         });
-        return updateCounts;
     }
 
     public Map<String, String> findEmployee(String employee) {

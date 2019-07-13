@@ -1,5 +1,6 @@
 package com.personio.hierarchymanager.controller;
 
+import com.personio.hierarchymanager.exception.EmptyRequestException;
 import com.personio.hierarchymanager.exception.LoopInRequestException;
 import com.personio.hierarchymanager.exception.MultiplyRootException;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
     }
 
-    @ExceptionHandler({MultiplyRootException.class, LoopInRequestException.class})
+    @ExceptionHandler({MultiplyRootException.class, LoopInRequestException.class, EmptyRequestException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public final ErrorDetails handleBadRequest(RuntimeException ex, WebRequest request) {
