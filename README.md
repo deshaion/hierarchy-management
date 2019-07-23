@@ -16,9 +16,9 @@ curl --user user:pass -d '{"Pete":"Nick", "Barbara":"Nick", "Nick":"Sophie", "So
 This JSON represents an Employee -> Supervisor relationship that looks like this:
 ```json
 {
-  "Pete": "Nick", 
-  "Barbara": "Nick", 
-  "Nick": "Sophie", 
+  "Pete": "Nick",
+  "Barbara": "Nick",
+  "Nick": "Sophie",
   "Sophie": "Jonas"
 }
 ```
