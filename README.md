@@ -11,7 +11,8 @@ curl -i --user user:pass http://localhost:8080/employees/Jonas
 curl --user user:pass -d '{"Pete":"Nick", "Barbara":"Nick", "Nick":"Sophie", "Sophie":"Jonas"}' -H "Content-Type: application/json" -X POST http://localhost:8080/relationships
 ```
 
-###The task:
+### The task:
+
 This JSON represents an Employee -> Supervisor relationship that looks like this:
 ```json
 {
